@@ -69,34 +69,34 @@ def build_model(img_size, style_dim, w_hpf, num_domains, wing_path):
 
 
 @torch.no_grad()
-def sample(modelType):
+def sample(domain):
     # 参考图 需要考虑分域
-    if modelType == 'afhq':
-        w_hpf = 0
-        num_domains = 3
-        modelName = '../model/afhq_model.ckpt'
-        src_dir = '../src'
-        ref_dir = '../ref/afhq'
-    elif modelType == 'celeba':
+    if domain == 'female' or domain == 'male':
         w_hpf = 1
         num_domains = 2
-        modelName = '../model/celeba_model.ckpt'
-        src_dir = '../src'
-        ref_dir = '../ref/celeba'
+        modelName = './model/celeba_model.ckpt'
+        src_dir = './src'
+        ref_dir = './ref/celeba'
+    elif domain == 'cat' or domain == 'dog' or domain == 'wild':
+        w_hpf = 0
+        num_domains = 3
+        modelName = './model/afhq_model.ckpt'
+        src_dir = './src'
+        ref_dir = './ref/afhq'
     else:
         w_hpf = 0
         num_domains = 1
-        modelName = '../model/other_model.ckpt'
-        src_dir = '../src'
-        ref_dir = '../ref/other'
+        modelName = './model/other_model.ckpt'
+        src_dir = './src'
+        ref_dir = './ref/other'
     # 参数
-    checkpoint_dir = '../model/'
-    result_dir = '../result/'
+    checkpoint_dir = './model/'
+    result_dir = './result/'
     val_batch_size = 8
     img_size = 256
     latent_dim = 16
     style_dim = 64
-    wing_path = '../core/wing.ckpt'
+    wing_path = './core/wing.ckpt'
     # resume_iter = 100000
     # 构建模型
     nets_ema = build_model(img_size, style_dim, w_hpf, num_domains, wing_path)

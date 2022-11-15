@@ -6,6 +6,8 @@ from PyQt5.QtGui import QIcon, QFont, QPixmap
 from PyQt5.QtWidgets import *
 
 from test import QClickableImage
+# 模型选择
+from core.generator import sample
 
 
 class MainApplication(QMainWindow):
@@ -165,21 +167,49 @@ class MainApplication(QMainWindow):
         # 设置图片的预览尺寸；
         self.displayed_image_size = 150
 
+    # 获取单选框的值
+    def getValueRadioButton(self):
+        domain = ''
+        if self.radioButton_1.isChecked():
+            domain = self.radioButton_1.text()
+        elif self.radioButton_2.isChecked():
+            domain = self.radioButton_2.text()
+        elif self.radioButton_3.isChecked():
+            domain = self.radioButton_3.text()
+        elif self.radioButton_4.isChecked():
+            domain = self.radioButton_4.text()
+        elif self.radioButton_5.isChecked():
+            domain = self.radioButton_5.text()
+        elif self.radioButton_6.isChecked():
+            domain = self.radioButton_6.text()
+        return domain
+
     def onClickInputButton(self, evt):
         print("输入图片按钮")
         self.path, _ = QFileDialog.getOpenFileName(self, '请选择文件！', 'Excel Files (*.png;*.jpg)')
         self.input_img_viewer()
         # return super().mousePressEvent(evt)
+
     def onClickRefButton(self, evt):
         print("参考图片按钮")
+        domain = self.getValueRadioButton()
+        if domain=='':
+            return QMessageBox.information(self, '错误', '参考图片未选择类型')
         self.path, _ = QFileDialog.getOpenFileName(self, '请选择文件！', 'Excel Files (*.png;*.jpg)')
         self.ref_img_viewer('female')
         # return super().mousePressEvent(evt)
+
     def onClickGeneButton(self, evt):
-        print("生成图片")
-        self.gene_img_viewer()
+        print("生成图片中···")
+        domain = self.getValueRadioButton()
+        if domain=='':
+            return QMessageBox.information(self, '错误', '参考图片未选择类型')
         self.status = self.statusBar()  # 实例化一个状态控件
         self.status.showMessage('生成图片中···', 5000)  # 设置存在时间为5秒
+        sample(domain)
+        self.gene_img_viewer()
+        self.status = self.statusBar()  # 实例化一个状态控件
+        self.status.showMessage('生成图片完成')  # 设置存在时间为5秒
 
     # 初始化滚动栏
     def clear_layout(self):
@@ -266,6 +296,7 @@ class MainApplication(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    QApplication.setQuitOnLastWindowClosed(False)
     app.setWindowIcon(QIcon('image/icon.png'))  # 设置窗体图标
     main = MainApplication()
     main.show()
