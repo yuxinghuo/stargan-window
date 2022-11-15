@@ -1,15 +1,15 @@
 import os
+import shutil
 import sys
 
-from PyQt5 import QtWidgets, QtCore, QtGui, Qt
+from PyQt5 import QtWidgets, QtCore, Qt
 from PyQt5.QtCore import pyqtSignal, QSize
 from PyQt5.QtGui import QIcon, QFont, QPixmap
 from PyQt5.QtWidgets import *
 
-import shutil
-from test import QClickableImage
 # 模型选择
 from core.generator import sample
+from test import QClickableImage
 
 
 class MainApplication(QMainWindow):
@@ -196,7 +196,7 @@ class MainApplication(QMainWindow):
     def onClickRefButton(self, evt):
         print("参考图片按钮")
         domain = self.getValueRadioButton()
-        if domain=='':
+        if domain == '':
             return QMessageBox.information(self, '错误', '参考图片未选择类型')
         self.path, _ = QFileDialog.getOpenFileName(self, '请选择文件！', 'image Files (*.png;*.jpg)')
         if domain == 'female':
@@ -219,7 +219,7 @@ class MainApplication(QMainWindow):
     def onClickGeneButton(self, evt):
         print("生成图片中···")
         domain = self.getValueRadioButton()
-        if domain=='':
+        if domain == '':
             return QMessageBox.information(self, '错误', '参考图片未选择类型')
         self.status = self.statusBar()  # 实例化一个状态控件
         self.status.showMessage('生成图片中···', 5000)  # 设置存在时间为5秒
@@ -278,6 +278,7 @@ class MainApplication(QMainWindow):
 
         def imageId(self):
             return self.image_id
+
     # 输入图片预览
     def input_img_viewer(self):
         file_path = './src/img'
