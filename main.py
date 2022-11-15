@@ -5,6 +5,7 @@ from PyQt5 import QtWidgets, QtCore, QtGui, Qt
 from PyQt5.QtGui import QIcon, QFont, QPixmap
 from PyQt5.QtWidgets import *
 
+import shutil
 from test import QClickableImage
 # 模型选择
 from core.generator import sample
@@ -186,7 +187,8 @@ class MainApplication(QMainWindow):
 
     def onClickInputButton(self, evt):
         print("输入图片按钮")
-        self.path, _ = QFileDialog.getOpenFileName(self, '请选择文件！', 'Excel Files (*.png;*.jpg)')
+        self.path, _ = QFileDialog.getOpenFileName(self, '请选择文件！', 'image Files (*.png;*.jpg)')
+        shutil.copy(self.path, './src/img')
         self.input_img_viewer()
         # return super().mousePressEvent(evt)
 
@@ -195,8 +197,22 @@ class MainApplication(QMainWindow):
         domain = self.getValueRadioButton()
         if domain=='':
             return QMessageBox.information(self, '错误', '参考图片未选择类型')
-        self.path, _ = QFileDialog.getOpenFileName(self, '请选择文件！', 'Excel Files (*.png;*.jpg)')
-        self.ref_img_viewer('female')
+        self.path, _ = QFileDialog.getOpenFileName(self, '请选择文件！', 'image Files (*.png;*.jpg)')
+        if domain == 'female':
+            file_path = './ref/celeba/female'
+        elif domain == 'male':
+            file_path = './ref/celeba/male'
+        elif domain == 'cat':
+            file_path = './ref/celeba/cat'
+        elif domain == 'dog':
+            file_path = './ref/celeba/dog'
+        elif domain == 'wild':
+            file_path = './ref/celeba/wild'
+        else:
+            file_path = './ref/cartoon'
+        shutil.copy(self.path, file_path)
+        print(self.path)
+        self.ref_img_viewer(domain)
         # return super().mousePressEvent(evt)
 
     def onClickGeneButton(self, evt):
@@ -296,7 +312,7 @@ class MainApplication(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    QApplication.setQuitOnLastWindowClosed(False)
+    # QApplication.setQuitOnLastWindowClosed(False)
     app.setWindowIcon(QIcon('image/icon.png'))  # 设置窗体图标
     main = MainApplication()
     main.show()
