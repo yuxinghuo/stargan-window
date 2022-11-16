@@ -186,11 +186,13 @@ class MainApplication(QMainWindow):
         self.displayed_image_size = 150
     # 初始化
     def startLoad(self):
+        # 删除输入图片目录文件
         path_data='./src/img'
         for i in os.listdir(path_data):  # os.listdir(path_data)#返回一个列表，里面是当前目录下面的所有东西的相对路径
             file_data = path_data + "/" + i  # 当前文件夹的下面的所有东西的绝对路径
             if os.path.isfile(file_data) == True:  # os.path.isfile判断是否为文件,如果是文件,就删除.如果是文件夹.递归给del_file.
                 os.remove(file_data)
+        # 删除参考图片目录文件
         path_data = ['./ref/afhq/cat', './ref/afhq/dog', './ref/afhq/wild', './ref/celeba/female', './ref/celeba/male',
                      './ref/cartoon/img']
         for j in path_data:
@@ -198,6 +200,12 @@ class MainApplication(QMainWindow):
                 file_data = j + "/" + i  # 当前文件夹的下面的所有东西的绝对路径
                 if os.path.isfile(file_data) == True:  # os.path.isfile判断是否为文件,如果是文件,就删除.如果是文件夹.递归给del_file.
                     os.remove(file_data)
+        # 删除生成图片目录文件
+        path_data = './result'
+        for i in os.listdir(path_data):  # os.listdir(path_data)#返回一个列表，里面是当前目录下面的所有东西的相对路径
+            file_data = path_data + "/" + i  # 当前文件夹的下面的所有东西的绝对路径
+            if os.path.isfile(file_data) == True:  # os.path.isfile判断是否为文件,如果是文件,就删除.如果是文件夹.递归给del_file.
+                os.remove(file_data)
     # 获取单选框的值
     def getValueRadioButton(self):
         domain = ''
@@ -269,7 +277,7 @@ class MainApplication(QMainWindow):
         elif domain == 'wild':
             file_path = './ref/afhq/wild'
         else:
-            file_path = './ref/cartoon'
+            file_path = './ref/cartoon/img'
         shutil.copy(self.path, file_path)
         print(self.path)
         self.ref_img_viewer(domain)
@@ -281,6 +289,24 @@ class MainApplication(QMainWindow):
         domain = self.getValueRadioButton()
         if domain == '':
             return QMessageBox.information(self, '错误', '参考图片未选择类型')
+        # 判断输入图片和参考图片是否都上传
+        srcPath = './src/img'
+        if len(os.listdir(srcPath)) == 0:
+            return QMessageBox.information(self, '生成图片', '输入图片未上传，生成图片失败！')
+        if domain == 'female':
+            srcPath = './ref/celeba/female'
+        elif domain == 'male':
+            srcPath = './ref/celeba/male'
+        elif domain == 'cat':
+            srcPath = './ref/afhq/cat'
+        elif domain == 'dog':
+            srcPath = './ref/afhq/dog'
+        elif domain == 'wild':
+            srcPath = './ref/afhq/wild'
+        else:
+            srcPath = './ref/cartoon/img'
+        if len(os.listdir(srcPath)) == 0:
+            return QMessageBox.information(self, '生成图片', '选择类型中参考图片未上传，生成图片失败！')
         self.status = self.statusBar()  # 实例化一个状态控件
         self.status.showMessage('生成图片中···', 5000)  # 设置存在时间为5秒
         sample(domain)
@@ -292,6 +318,10 @@ class MainApplication(QMainWindow):
 
     # 保存生成图片
     def onClickGeneSaveButton(self, evt):
+        srcPath = './result/reference.jpg'
+        if os.path.exists(srcPath) != True:
+            QMessageBox.information(self, '保存图片', '未生成图片，保存图片失败！')
+            return
         print("保存图片中···")
         path = QFileDialog.getExistingDirectory(self,"选择存储文件夹")
         if path == '':
@@ -375,7 +405,7 @@ class MainApplication(QMainWindow):
         elif domain == 'wild':
             file_path = './ref/afhq/wild'
         else:
-            file_path = './ref/cartoon'
+            file_path = './ref/cartoon/img'
         print('file_path为{}'.format(file_path))
         img_type = ('.jpg', '.png', '.jepg')
         png_list = list(i for i in os.listdir(file_path) if str(i).endswith(img_type))
