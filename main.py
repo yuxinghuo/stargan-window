@@ -3,13 +3,11 @@ import shutil
 import sys
 
 from PyQt5 import QtWidgets, QtCore, Qt
-from PyQt5.QtCore import pyqtSignal, QSize
-from PyQt5.QtGui import QIcon, QFont, QPixmap
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-# 模型选择
 from core.generator import sample
-from test import QClickableImage
 
 
 class MainApplication(QMainWindow):
@@ -31,7 +29,7 @@ class MainApplication(QMainWindow):
         # 设置窗口背景图片
         self.setStyleSheet("#MainWindow{border-image:url(image/background.jpg);}")
         self.setWindowTitle('StarGan图像生成')
-        self.setGeometry(100, 100, 1000, 600)
+        self.setGeometry(100, 100, 1000, 700)
         # 屏幕居中
         screen = QDesktopWidget().screenGeometry()  # 获取屏幕坐标系
         # 获取窗口坐标系
@@ -49,14 +47,22 @@ class MainApplication(QMainWindow):
         self.inputButton = QPushButton(self)
         self.inputButton.setGeometry(130, 16, 130, 30)
         self.inputButton.setObjectName('inputButton')
-        self.inputButton.setText('上传')
+        self.inputButton.setText('上 传')
         self.inputButton.clicked.connect(self.onClickInputButton)
+
+        # 输入模块--清除
+        self.inputCleanButton = QPushButton(self)
+        self.inputCleanButton.setGeometry(270, 16, 130, 30)
+        self.inputCleanButton.setObjectName('inputCleanButton')
+        self.inputCleanButton.setText('清 除')
+        self.inputCleanButton.clicked.connect(self.onClickInputButton)
+
         # 输入模块--显示图像
         self.inputTextbox = QLineEdit(self)
         # 不显示QLineEdit的边缘，设置位置，字体样式，不可编辑
         self.inputTextbox.setStyleSheet("background:transparent;border-width:0;border-style:outset")
         self.inputTextbox.move(50, 60)
-        self.inputTextbox.resize(300, 200)
+        self.inputTextbox.resize(350, 240)
         # self.textbox.setFocusPolicy(Qt.NoFocus)
         self.inputTextbox.setFont(QFont("Arial", 20))
         self.inputTextbox.setText("    NOP:")
@@ -67,54 +73,68 @@ class MainApplication(QMainWindow):
         self.inputScrollAreaWidgetContents.setObjectName('inputScrollAreaWidgetContents')
         self.inputGridLayout = QGridLayout(self.inputScrollAreaWidgetContents)
         self.inputScrollAreaImages.setWidget(self.inputScrollAreaWidgetContents)
-        self.inputScrollAreaImages.setGeometry(50, 60, 300, 200)
+        self.inputScrollAreaImages.setGeometry(50, 60, 350, 240)
         self.inputVertocall = QVBoxLayout()
         self.inputVertocall.addWidget(self.inputScrollAreaImages)
 
         # 参考图模块--label
+        # 参考图模块--图片类型
+        self.refTypeLabel = QLabel(self)
+        self.refTypeLabel.setObjectName("refTypeLabel")
+        self.refTypeLabel.setGeometry(50, 320, 75, 40)
+        self.refTypeLabel.setText(" 图片种类：")
+        # 参考图模块--label
         self.refLabel = QLabel(self)
         self.refLabel.setObjectName("refLabel")
-        self.refLabel.setGeometry(50, 280, 75, 40)
+        self.refLabel.setGeometry(50, 360, 75, 40)
         self.refLabel.setText(" 参考图片：")
         # 参考图模块--上传
         self.refButton = QPushButton(self)
-        self.refButton.setGeometry(130, 286, 130, 30)
+        self.refButton.setGeometry(130, 366, 130, 30)
         self.refButton.setObjectName('refButton')
-        self.refButton.setText('上传')
+        self.refButton.setText('上 传')
         # self.refButton.clicked.connect(self.onClickInputButton)
         self.refButton.clicked.connect(self.onClickRefButton)
+
+        # 参考图模块--清除
+        self.refCleanButton = QPushButton(self)
+        self.refCleanButton.setGeometry(270, 366, 130, 30)
+        self.refCleanButton.setObjectName('inputCleanButton')
+        self.refCleanButton.setText('清 除')
+        self.refCleanButton.clicked.connect(self.onClickInputButton)
+
         # 参考图模块--单选域
         self.radioButton_1 = QtWidgets.QRadioButton(self)
-        self.radioButton_1.setGeometry(QtCore.QRect(50, 315, 89, 16))
+        self.radioButton_1.setGeometry(QtCore.QRect(130, 330, 89, 16))
         self.radioButton_1.setObjectName("radioButton_1")
         self.radioButton_2 = QtWidgets.QRadioButton(self)
-        self.radioButton_2.setGeometry(QtCore.QRect(150, 315, 89, 16))
+        self.radioButton_2.setGeometry(QtCore.QRect(220, 330, 89, 16))
         self.radioButton_2.setObjectName("radioButton_2")
         self.radioButton_3 = QtWidgets.QRadioButton(self)
-        self.radioButton_3.setGeometry(QtCore.QRect(250, 315, 89, 16))
+        self.radioButton_3.setGeometry(QtCore.QRect(310, 330, 89, 16))
         self.radioButton_3.setObjectName("radioButton_3")
         self.radioButton_4 = QtWidgets.QRadioButton(self)
-        self.radioButton_4.setGeometry(QtCore.QRect(50, 335, 89, 16))
+        self.radioButton_4.setGeometry(QtCore.QRect(130, 350, 89, 16))
         self.radioButton_4.setObjectName("radioButton_4")
         self.radioButton_5 = QtWidgets.QRadioButton(self)
-        self.radioButton_5.setGeometry(QtCore.QRect(150, 335, 89, 16))
+        self.radioButton_5.setGeometry(QtCore.QRect(220, 350, 89, 16))
         self.radioButton_5.setObjectName("radioButton_5")
         self.radioButton_6 = QtWidgets.QRadioButton(self)
-        self.radioButton_6.setGeometry(QtCore.QRect(250, 335, 89, 16))
+        self.radioButton_6.setGeometry(QtCore.QRect(310, 350, 89, 16))
         self.radioButton_6.setObjectName("radioButton_6")
         translate = QtCore.QCoreApplication.translate
         self.radioButton_1.setText(translate("Form", "female"))
         self.radioButton_2.setText(translate("Form", "male"))
-        self.radioButton_3.setText(translate("Form", "cat"))
-        self.radioButton_4.setText(translate("Form", "dog"))
-        self.radioButton_5.setText(translate("Form", "wild"))
-        self.radioButton_6.setText(translate("Form", "cartoon"))
+        self.radioButton_3.setText(translate("Form", "cartoon"))
+        self.radioButton_4.setText(translate("Form", "cat"))
+        self.radioButton_5.setText(translate("Form", "dog"))
+        self.radioButton_6.setText(translate("Form", "wild"))
 
         self.refTextbox = QLineEdit(self)
         # 不显示QLineEdit的边缘，设置位置，字体样式，不可编辑
         self.refTextbox.setStyleSheet("background:transparent;border-width:0;border-style:outset")
-        self.refTextbox.move(50, 360)
-        self.refTextbox.resize(300, 200)
+        self.refTextbox.move(50, 400)
+        self.refTextbox.resize(350, 240)
         # self.textbox.setFocusPolicy(Qt.NoFocus)
         self.refTextbox.setFont(QFont("Arial", 20))
         self.refTextbox.setText("    NOP:")
@@ -125,7 +145,7 @@ class MainApplication(QMainWindow):
         self.refScrollAreaWidgetContents.setObjectName('scrollAreaWidgetContentsRef')
         self.refGridLayout = QGridLayout(self.refScrollAreaWidgetContents)
         self.refScrollAreaImages.setWidget(self.refScrollAreaWidgetContents)
-        self.refScrollAreaImages.setGeometry(50, 360, 300, 200)
+        self.refScrollAreaImages.setGeometry(50, 400, 350, 240)
         self.refVertocall = QVBoxLayout()
         self.refVertocall.addWidget(self.refScrollAreaImages)
 
@@ -138,20 +158,21 @@ class MainApplication(QMainWindow):
         self.geneButton = QPushButton(self)
         self.geneButton.setGeometry(580, 16, 130, 30)
         self.geneButton.setObjectName('geneButton')
-        self.geneButton.setText('生成')
+        self.geneButton.setText('生 成')
         self.geneButton.clicked.connect(self.onClickGeneButton)
 
         # 生成模块--保存
         self.geneButtonSave = QPushButton(self)
-        self.geneButtonSave.setGeometry(740, 16, 100, 32)
+        self.geneButtonSave.setGeometry(740, 16, 130, 32)
         self.geneButtonSave.setObjectName('geneButtonSave')
-        self.geneButtonSave.setText('保存')
+        self.geneButtonSave.setText('保 存')
+        self.geneButtonSave.clicked.connect(self.onClickGeneSaveButton)
 
         self.geneTextbox = QLineEdit(self)
         # 不显示QLineEdit的边缘，设置位置，字体样式，不可编辑
         self.geneTextbox.setStyleSheet("background:transparent;border-width:0;border-style:outset")
         self.geneTextbox.move(500, 60)
-        self.geneTextbox.resize(450, 500)
+        self.geneTextbox.resize(450, 580)
         # self.textbox.setFocusPolicy(Qt.NoFocus)
         self.geneTextbox.setFont(QFont("Arial", 20))
         self.geneTextbox.setText("    NOP:")
@@ -162,7 +183,7 @@ class MainApplication(QMainWindow):
         self.geneScrollAreaWidgetContents.setObjectName('scrollAreaWidgetContentsRef')
         self.geneGridLayout = QGridLayout(self.geneScrollAreaWidgetContents)
         self.geneScrollAreaImages.setWidget(self.geneScrollAreaWidgetContents)
-        self.geneScrollAreaImages.setGeometry(500, 60, 450, 500)
+        self.geneScrollAreaImages.setGeometry(500, 60, 450, 580)
         self.geneVertocall = QVBoxLayout()
         self.geneVertocall.addWidget(self.geneScrollAreaImages)
 
@@ -189,7 +210,10 @@ class MainApplication(QMainWindow):
     def onClickInputButton(self, evt):
         print("输入图片按钮")
         self.path, _ = QFileDialog.getOpenFileName(self, '请选择文件！', 'image Files (*.png;*.jpg)')
+        if self.path == '':
+            return
         shutil.copy(self.path, './src/img')
+        QMessageBox.information(self, '上传图片', '上传图片成功')
         self.input_img_viewer()
         # return super().mousePressEvent(evt)
 
@@ -199,21 +223,25 @@ class MainApplication(QMainWindow):
         if domain == '':
             return QMessageBox.information(self, '错误', '参考图片未选择类型')
         self.path, _ = QFileDialog.getOpenFileName(self, '请选择文件！', 'image Files (*.png;*.jpg)')
+        if self.path == '':
+            return
         if domain == 'female':
             file_path = './ref/celeba/female'
         elif domain == 'male':
             file_path = './ref/celeba/male'
         elif domain == 'cat':
-            file_path = './ref/celeba/cat'
+            file_path = './ref/afhq/cat'
         elif domain == 'dog':
-            file_path = './ref/celeba/dog'
+            file_path = './ref/afhq/dog'
         elif domain == 'wild':
-            file_path = './ref/celeba/wild'
+            file_path = './ref/afhq/wild'
         else:
             file_path = './ref/cartoon'
         shutil.copy(self.path, file_path)
         print(self.path)
+        QMessageBox.information(self, '上传图片', '上传图片成功')
         self.ref_img_viewer(domain)
+
         # return super().mousePressEvent(evt)
 
     def onClickGeneButton(self, evt):
@@ -225,8 +253,19 @@ class MainApplication(QMainWindow):
         self.status.showMessage('生成图片中···', 5000)  # 设置存在时间为5秒
         sample(domain)
         self.gene_img_viewer()
+        QMessageBox.information(self, '生成图片', '生成图片成功')
         self.status = self.statusBar()  # 实例化一个状态控件
         self.status.showMessage('生成图片完成')  # 设置存在时间为5秒
+
+    def onClickGeneSaveButton(self, evt):
+        print("保存图片中···")
+        path = QFileDialog.getExistingDirectory(self,"选择存储文件夹")
+        if path == '':
+            return
+        shutil.copy('./result/reference.jpg', path)
+        QMessageBox.information(self, '保存图片', '保存图片成功')
+        self.status = self.statusBar()  # 实例化一个状态控件
+        self.status.showMessage('保存图片完成')  # 设置存在时间为5秒
 
     # 初始化滚动栏
     def clear_layout(self):
@@ -264,17 +303,8 @@ class MainApplication(QMainWindow):
                 self.layout.addWidget(self.lable2)
             self.setLayout(self.layout)
 
-        clicked = pyqtSignal(object)
-        rightClicked = pyqtSignal(object)
-
-        def mouseressevent(self, ev):
-            print('55555555555555555')
-            if ev.button() == Qt.RightButton:
-                print('dasdasd')
-                # 鼠标右击
-                self.rightClicked.emit(self.image_id)
-            else:
-                self.clicked.emit(self.image_id)
+        # clicked = pyqtSignal(object)
+        # rightClicked = pyqtSignal(object)
 
         def imageId(self):
             return self.image_id
@@ -292,14 +322,14 @@ class MainApplication(QMainWindow):
                 image_id = str(file_path + '/' + png_list[i])
                 print(image_id)
                 pixmap = QPixmap(image_id)
-                clickable_image = QClickableImage(self.displayed_image_size, self.displayed_image_size, pixmap,
-                                                  image_id)
+                clickable_image = self.QClickableImage(self.displayed_image_size, self.displayed_image_size, pixmap,
+                                                       image_id)
                 self.inputGridLayout.addWidget(clickable_image, 1, i)
                 # print(pixmap)
                 QApplication.processEvents()
         else:
             QMessageBox.warning(self, '错误', '生成图片文件为空')
-            # self.event(exit())
+            return
 
     # 参考图片预览
     def ref_img_viewer(self, domain):
@@ -308,11 +338,11 @@ class MainApplication(QMainWindow):
         elif domain == 'male':
             file_path = './ref/celeba/male'
         elif domain == 'cat':
-            file_path = './ref/celeba/cat'
+            file_path = './ref/afhq/cat'
         elif domain == 'dog':
-            file_path = './ref/celeba/dog'
+            file_path = './ref/afhq/dog'
         elif domain == 'wild':
-            file_path = './ref/celeba/wild'
+            file_path = './ref/afhq/wild'
         else:
             file_path = './ref/cartoon'
         print('file_path为{}'.format(file_path))
@@ -325,14 +355,14 @@ class MainApplication(QMainWindow):
                 image_id = str(file_path + '/' + png_list[i])
                 print(image_id)
                 pixmap = QPixmap(image_id)
-                clickable_image = QClickableImage(self.displayed_image_size, self.displayed_image_size, pixmap,
-                                                  image_id)
+                clickable_image = self.QClickableImage(self.displayed_image_size, self.displayed_image_size, pixmap,
+                                                       image_id)
                 self.refGridLayout.addWidget(clickable_image, 1, i)
                 # print(pixmap)
                 QApplication.processEvents()
         else:
             QMessageBox.warning(self, '错误', '生成图片文件为空')
-            # self.event(exit())
+            return
 
     # 生成图片预览
     def gene_img_viewer(self):
@@ -348,13 +378,13 @@ class MainApplication(QMainWindow):
                 image_id = str(file_path + '/' + png_list[i])
                 print(image_id)
                 pixmap = QPixmap(image_id)
-                clickable_image = QClickableImage(displayed_image_size, displayed_image_size, pixmap,
-                                                  image_id)
+                clickable_image = self.QClickableImage(displayed_image_size, displayed_image_size, pixmap,
+                                                       image_id)
                 self.geneGridLayout.addWidget(clickable_image, 1, i)
                 QApplication.processEvents()
         else:
             QMessageBox.warning(self, '错误', '生成图片文件为空')
-            # self.event(exit())
+            return
 
 
 if __name__ == '__main__':

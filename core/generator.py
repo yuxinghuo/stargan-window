@@ -136,5 +136,9 @@ def sample(domain):
 
 
 if __name__ == '__main__':
-    # sample("afhq")
-    sample("celeba")
+    # sample("female")
+    # sample("cat")
+    # sample("dog")
+    # sample("mild")
+    # sample("cartoon")
+    sample("female")
