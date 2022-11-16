@@ -49,14 +49,12 @@ class MainApplication(QMainWindow):
         self.inputButton.setObjectName('inputButton')
         self.inputButton.setText('上 传')
         self.inputButton.clicked.connect(self.onClickInputButton)
-
         # 输入模块--清除
         self.inputCleanButton = QPushButton(self)
         self.inputCleanButton.setGeometry(270, 16, 130, 30)
         self.inputCleanButton.setObjectName('inputCleanButton')
         self.inputCleanButton.setText('清 除')
-        self.inputCleanButton.clicked.connect(self.onClickInputButton)
-
+        self.inputCleanButton.clicked.connect(self.onClickInputCleanButton)
         # 输入模块--显示图像
         self.inputTextbox = QLineEdit(self)
         # 不显示QLineEdit的边缘，设置位置，字体样式，不可编辑
@@ -77,7 +75,6 @@ class MainApplication(QMainWindow):
         self.inputVertocall = QVBoxLayout()
         self.inputVertocall.addWidget(self.inputScrollAreaImages)
 
-        # 参考图模块--label
         # 参考图模块--图片类型
         self.refTypeLabel = QLabel(self)
         self.refTypeLabel.setObjectName("refTypeLabel")
@@ -93,16 +90,13 @@ class MainApplication(QMainWindow):
         self.refButton.setGeometry(130, 366, 130, 30)
         self.refButton.setObjectName('refButton')
         self.refButton.setText('上 传')
-        # self.refButton.clicked.connect(self.onClickInputButton)
         self.refButton.clicked.connect(self.onClickRefButton)
-
         # 参考图模块--清除
         self.refCleanButton = QPushButton(self)
         self.refCleanButton.setGeometry(270, 366, 130, 30)
         self.refCleanButton.setObjectName('inputCleanButton')
         self.refCleanButton.setText('清 除')
-        self.refCleanButton.clicked.connect(self.onClickInputButton)
-
+        self.refCleanButton.clicked.connect(self.onClickRefCleanButton)
         # 参考图模块--单选域
         self.radioButton_1 = QtWidgets.QRadioButton(self)
         self.radioButton_1.setGeometry(QtCore.QRect(130, 330, 89, 16))
@@ -160,7 +154,6 @@ class MainApplication(QMainWindow):
         self.geneButton.setObjectName('geneButton')
         self.geneButton.setText('生 成')
         self.geneButton.clicked.connect(self.onClickGeneButton)
-
         # 生成模块--保存
         self.geneButtonSave = QPushButton(self)
         self.geneButtonSave.setGeometry(740, 16, 130, 32)
@@ -206,17 +199,42 @@ class MainApplication(QMainWindow):
         elif self.radioButton_6.isChecked():
             domain = self.radioButton_6.text()
         return domain
-
+    # 输入图片上传
     def onClickInputButton(self, evt):
         print("输入图片按钮")
         self.path, _ = QFileDialog.getOpenFileName(self, '请选择文件！', 'image Files (*.png;*.jpg)')
         if self.path == '':
             return
         shutil.copy(self.path, './src/img')
-        QMessageBox.information(self, '上传图片', '上传图片成功')
         self.input_img_viewer()
-        # return super().mousePressEvent(evt)
+        QMessageBox.information(self, '上传图片', '上传图片成功')
 
+    # 输入图片清除
+    def onClickInputCleanButton(self, evt):
+        path_data='./src/img'
+        for i in os.listdir(path_data):  # os.listdir(path_data)#返回一个列表，里面是当前目录下面的所有东西的相对路径
+            file_data = path_data + "/" + i  # 当前文件夹的下面的所有东西的绝对路径
+            if os.path.isfile(file_data) == True:  # os.path.isfile判断是否为文件,如果是文件,就删除.如果是文件夹.递归给del_file.
+                os.remove(file_data)
+        # 清除照片
+        for i in range(self.inputGridLayout.count()):
+            self.inputGridLayout.itemAt(i).widget().deleteLater()
+        QMessageBox.information(self, '清除图片', '清除上传的图片成功')
+
+    # 参考图片清除
+    def onClickRefCleanButton(self, evt):
+        path_data = ['./ref/afhq/cat', './ref/afhq/dog', './ref/afhq/wild', './ref/celeba/female', './ref/celeba/male',
+                     './ref/cartoon/img']
+        for j in path_data:
+            for i in os.listdir(j):  # os.listdir(path_data)#返回一个列表，里面是当前目录下面的所有东西的相对路径
+                file_data = j + "/" + i  # 当前文件夹的下面的所有东西的绝对路径
+                if os.path.isfile(file_data) == True:  # os.path.isfile判断是否为文件,如果是文件,就删除.如果是文件夹.递归给del_file.
+                    os.remove(file_data)
+        # 清除照片
+        for i in range(self.refGridLayout.count()):
+            self.refGridLayout.itemAt(i).widget().deleteLater()
+        QMessageBox.information(self, '清除图片', '清除上传的图片成功')
+    # 参考图片上传
     def onClickRefButton(self, evt):
         print("参考图片按钮")
         domain = self.getValueRadioButton()
@@ -239,11 +257,10 @@ class MainApplication(QMainWindow):
             file_path = './ref/cartoon'
         shutil.copy(self.path, file_path)
         print(self.path)
-        QMessageBox.information(self, '上传图片', '上传图片成功')
         self.ref_img_viewer(domain)
+        QMessageBox.information(self, '上传图片', '上传图片成功')
 
-        # return super().mousePressEvent(evt)
-
+    # 生成图片方法
     def onClickGeneButton(self, evt):
         print("生成图片中···")
         domain = self.getValueRadioButton()
@@ -252,11 +269,13 @@ class MainApplication(QMainWindow):
         self.status = self.statusBar()  # 实例化一个状态控件
         self.status.showMessage('生成图片中···', 5000)  # 设置存在时间为5秒
         sample(domain)
+
         self.gene_img_viewer()
-        QMessageBox.information(self, '生成图片', '生成图片成功')
         self.status = self.statusBar()  # 实例化一个状态控件
         self.status.showMessage('生成图片完成')  # 设置存在时间为5秒
+        QMessageBox.information(self, '生成图片', '生成图片成功')
 
+    # 保存生成图片
     def onClickGeneSaveButton(self, evt):
         print("保存图片中···")
         path = QFileDialog.getExistingDirectory(self,"选择存储文件夹")
@@ -302,9 +321,6 @@ class MainApplication(QMainWindow):
                 self.lable2.adjustSize()
                 self.layout.addWidget(self.lable2)
             self.setLayout(self.layout)
-
-        # clicked = pyqtSignal(object)
-        # rightClicked = pyqtSignal(object)
 
         def imageId(self):
             return self.image_id
