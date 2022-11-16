@@ -180,9 +180,24 @@ class MainApplication(QMainWindow):
         self.geneVertocall = QVBoxLayout()
         self.geneVertocall.addWidget(self.geneScrollAreaImages)
 
+        # 初始化
+        self.startLoad()
         # 设置图片的预览尺寸；
         self.displayed_image_size = 150
-
+    # 初始化
+    def startLoad(self):
+        path_data='./src/img'
+        for i in os.listdir(path_data):  # os.listdir(path_data)#返回一个列表，里面是当前目录下面的所有东西的相对路径
+            file_data = path_data + "/" + i  # 当前文件夹的下面的所有东西的绝对路径
+            if os.path.isfile(file_data) == True:  # os.path.isfile判断是否为文件,如果是文件,就删除.如果是文件夹.递归给del_file.
+                os.remove(file_data)
+        path_data = ['./ref/afhq/cat', './ref/afhq/dog', './ref/afhq/wild', './ref/celeba/female', './ref/celeba/male',
+                     './ref/cartoon/img']
+        for j in path_data:
+            for i in os.listdir(j):  # os.listdir(path_data)#返回一个列表，里面是当前目录下面的所有东西的相对路径
+                file_data = j + "/" + i  # 当前文件夹的下面的所有东西的绝对路径
+                if os.path.isfile(file_data) == True:  # os.path.isfile判断是否为文件,如果是文件,就删除.如果是文件夹.递归给del_file.
+                    os.remove(file_data)
     # 获取单选框的值
     def getValueRadioButton(self):
         domain = ''
@@ -210,7 +225,7 @@ class MainApplication(QMainWindow):
         QMessageBox.information(self, '上传图片', '上传图片成功')
 
     # 输入图片清除
-    def onClickInputCleanButton(self, evt):
+    def onClickInputCleanButton(self):
         path_data='./src/img'
         for i in os.listdir(path_data):  # os.listdir(path_data)#返回一个列表，里面是当前目录下面的所有东西的相对路径
             file_data = path_data + "/" + i  # 当前文件夹的下面的所有东西的绝对路径
@@ -222,7 +237,7 @@ class MainApplication(QMainWindow):
         QMessageBox.information(self, '清除图片', '清除上传的图片成功')
 
     # 参考图片清除
-    def onClickRefCleanButton(self, evt):
+    def onClickRefCleanButton(self):
         path_data = ['./ref/afhq/cat', './ref/afhq/dog', './ref/afhq/wild', './ref/celeba/female', './ref/celeba/male',
                      './ref/cartoon/img']
         for j in path_data:
