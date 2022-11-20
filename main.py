@@ -27,7 +27,7 @@ class MainApplication(QMainWindow):
         self.setStatusBar(self.statusbar)
 
         # 设置窗口背景图片
-        self.setStyleSheet("#MainWindow{border-image:url(image/background.jpg);}")
+        # self.setStyleSheet("#MainWindow{border-image:url(image/background.jpg);}")
         self.setWindowTitle('StarGan图像生成')
         self.setGeometry(100, 100, 1000, 700)
         # 屏幕居中
@@ -285,6 +285,8 @@ class MainApplication(QMainWindow):
 
     # 生成图片方法
     def onClickGeneButton(self, evt):
+        # 清除图片
+
         print("生成图片中···")
         domain = self.getValueRadioButton()
         if domain == '':
@@ -345,8 +347,8 @@ class MainApplication(QMainWindow):
             self.layout = QVBoxLayout(self)
             self.label1 = QLabel()
             self.label1.setObjectName('label1')
-            self.lable2 = QLabel()
-            self.lable2.setObjectName('label2')
+            # self.lable2 = QLabel()
+            # self.lable2.setObjectName('label2')
             self.width = width
             self.height = height
             self.pixmap = pixmap
@@ -360,11 +362,11 @@ class MainApplication(QMainWindow):
                 self.layout.addWidget(self.label1)
             if image_id:
                 self.image_id = image_id
-                self.lable2.setText(image_id)
-                self.lable2.setAlignment(Qt.AlignCenter)
-                ###让文字自适应大小
-                self.lable2.adjustSize()
-                self.layout.addWidget(self.lable2)
+                # self.lable2.setText(image_id)
+                # self.lable2.setAlignment(Qt.AlignCenter)
+                # ###让文字自适应大小
+                # self.lable2.adjustSize()
+                # self.layout.addWidget(self.lable2)
             self.setLayout(self.layout)
 
         def imageId(self):
