@@ -84,9 +84,9 @@ def sample(domain):
         src_dir = './src'
         ref_dir = './ref/afhq'
     else:
-        w_hpf = 0
+        w_hpf = 1
         num_domains = 1
-        modelName = './model/other_model.ckpt'
+        modelName = './model/cartoon_model.ckpt'
         src_dir = './src'
         ref_dir = './ref/other'
     # 参数
@@ -124,13 +124,13 @@ def sample(domain):
     s_ref = nets_ema.style_encoder(ref.x, ref.y)
     s_ref_list = s_ref.unsqueeze(1).repeat(1, N, 1)
     # 去除第一行
-    # x_concat = [x_src_with_wb]
-    x_concat = []
+    x_concat = [x_src_with_wb]
+    # x_concat = []
     for i, s_ref in enumerate(s_ref_list):
         x_fake = nets_ema.generator(src.x, s_ref, masks=masks)
         x_fake_with_ref = torch.cat([x_fake], dim=0)
         # 去除第一列
-        # x_fake_with_ref = torch.cat([ref.x[i:i + 1], x_fake], dim=0)
+        x_fake_with_ref = torch.cat([ref.x[i:i + 1], x_fake], dim=0)
         x_concat += [x_fake_with_ref]
     x_concat = torch.cat(x_concat, dim=0)
     # 保存图片

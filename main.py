@@ -14,7 +14,7 @@ class MainApplication(QMainWindow):
     def __init__(self):
         super(MainApplication, self).__init__()
         # 设置对象名称
-        self.setObjectName("MainWindow")
+        # self.setObjectName("MainWindow")
 
         # 菜单栏
         # self.menubar = QtWidgets.QMenuBar(self)
