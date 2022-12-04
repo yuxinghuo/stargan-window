@@ -26,7 +26,8 @@ class Stats:
         # 清除全部
         self.ui.clearAll.clicked.connect(self.onClickCleanButton)
         # logo
-        self.ui.logoImg
+        self.ui.logoImg.setStyleSheet("border-image: url(image/WechatIMG2826.png)");
+
         self.ui.setWindowTitle('StarGan图像生成')
         # 创建输入图片滚动条
         self.inputScrollAreaImages = QScrollArea(self.ui)
