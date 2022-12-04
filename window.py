@@ -272,6 +272,9 @@ class Stats:
 
     # 生成图片预览
     def gene_img_viewer(self):
+        # 清除生成照片
+        for i in range(self.geneGridLayout.count()):
+            self.geneGridLayout.itemAt(i).widget().deleteLater()
         file_path = './result'
         print('file_path为{}'.format(file_path))
         img_type = ('.jpg', '.png', '.jepg')
