@@ -26,7 +26,7 @@ class Stats:
         # 清除全部
         self.ui.clearAll.clicked.connect(self.onClickCleanButton)
         # logo
-        self.ui.logoImg.setStyleSheet("border-image: url(image/WechatIMG2826.png)");
+        self.ui.logoImg.setStyleSheet("border-image: url(image/background.png)");
 
         self.ui.setWindowTitle('StarGan图像生成')
         # 创建输入图片滚动条
@@ -218,7 +218,7 @@ class Stats:
     def input_img_viewer(self):
         file_path = './src/img'
         print('file_path为{}'.format(file_path))
-        img_type = ('.jpg', '.png', '.jepg')
+        img_type = ('.jpg', '.png', '.jpeg')
         png_list = list(i for i in os.listdir(file_path) if str(i).endswith(img_type))
         print(png_list)
         num = len(png_list)
@@ -251,7 +251,7 @@ class Stats:
         else:
             file_path = './ref/cartoon/img'
         print('file_path为{}'.format(file_path))
-        img_type = ('.jpg', '.png', '.jepg')
+        img_type = ('.jpg', '.png', '.jpeg')
         png_list = list(i for i in os.listdir(file_path) if str(i).endswith(img_type))
         print(png_list)
         num = len(png_list)
@@ -277,7 +277,7 @@ class Stats:
             self.geneGridLayout.itemAt(i).widget().deleteLater()
         file_path = './result'
         print('file_path为{}'.format(file_path))
-        img_type = ('.jpg', '.png', '.jepg')
+        img_type = ('.jpg', '.png', '.jpeg')
         png_list = list(i for i in os.listdir(file_path) if str(i).endswith(img_type))
         print(png_list)
         num = len(png_list)
