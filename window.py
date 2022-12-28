@@ -1,14 +1,13 @@
-import sys
-from PyQt5 import QtCore, QtGui, QtWidgets, uic
-from PyQt5.QtWidgets import QApplication
 import os
 import shutil
 import sys
 
-from PyQt5 import QtWidgets, QtCore, Qt
+from PyQt5 import Qt
+from PyQt5 import uic
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QApplication
 
 from core.generator import sample
 
@@ -27,7 +26,6 @@ class Stats:
         self.ui.clearAll.clicked.connect(self.onClickCleanButton)
         # logo
         self.ui.logoImg.setStyleSheet("border-image: url(image/background.png)");
-
         self.ui.setWindowTitle('StarGan图像生成')
         # 创建输入图片滚动条
         self.inputScrollAreaImages = QScrollArea(self.ui)
@@ -39,7 +37,6 @@ class Stats:
         self.inputScrollAreaImages.setWidget(self.inputScrollAreaWidgetContents)
         self.ui.inputBoxLayout.setAlignment(Qt.AlignLeft)
         self.ui.inputBoxLayout.addWidget(self.inputScrollAreaImages)
-
         # 创建参考图片位置滚动条
         self.refScrollAreaImages = QScrollArea(self.ui)
         self.refScrollAreaImages.setWidgetResizable(True)
@@ -50,7 +47,6 @@ class Stats:
         self.refScrollAreaImages.setWidget(self.refScrollAreaWidgetContents)
         self.ui.referBoxLayout.setAlignment(Qt.AlignLeft)
         self.ui.referBoxLayout.addWidget(self.refScrollAreaImages)
-
         # 创建生成图片滚动条
         self.geneScrollAreaImages = QScrollArea(self.ui)
         self.geneScrollAreaImages.setWidgetResizable(True)
@@ -98,6 +94,7 @@ class Stats:
         # 清除生成照片
         for i in range(self.geneGridLayout.count()):
             self.geneGridLayout.itemAt(i).widget().deleteLater()
+
     # 获取单选框的值
     def getValueRadioButton(self):
         domain = ''
@@ -137,7 +134,6 @@ class Stats:
             if image_id:
                 self.image_id = image_id
             self.setLayout(self.layout)
-
 
         def imageId(self):
             return self.image_id

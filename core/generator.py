@@ -7,7 +7,7 @@ from torchvision.datasets import ImageFolder
 
 from core.model import *
 
-
+# 随机获取源图片和参考图片
 class InputFetcher1:
     def __init__(self, loader, latent_dim=16):
         self.loader = loader

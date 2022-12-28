@@ -15,13 +15,13 @@ from collections import namedtuple
 from copy import deepcopy
 from functools import partial
 
-from munch import Munch
-import numpy as np
 import cv2
-from skimage.filters import gaussian
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from munch import Munch
+from skimage.filters import gaussian
 
 
 def get_preds_fromhm(hm):
@@ -120,8 +120,10 @@ class AddCoordsTh(nn.Module):
         if self.with_boundary and heatmap is not None:
             boundary_channel = torch.clamp(heatmap[:, -1:, :, :], 0.0, 1.0)
             zero_tensor = torch.zeros_like(self.x_coords)
-            xx_boundary_channel = torch.where(boundary_channel > 0.05, self.x_coords, zero_tensor).to(zero_tensor.device)
-            yy_boundary_channel = torch.where(boundary_channel > 0.05, self.y_coords, zero_tensor).to(zero_tensor.device)
+            xx_boundary_channel = torch.where(boundary_channel > 0.05, self.x_coords, zero_tensor).to(
+                zero_tensor.device)
+            yy_boundary_channel = torch.where(boundary_channel > 0.05, self.y_coords, zero_tensor).to(
+                zero_tensor.device)
             coords = torch.cat([coords, xx_boundary_channel, yy_boundary_channel], dim=1)
 
         x_and_coords = torch.cat([x, coords], dim=1)
@@ -130,6 +132,7 @@ class AddCoordsTh(nn.Module):
 
 class CoordConvTh(nn.Module):
     """CoordConv layer as in the paper."""
+
     def __init__(self, height, width, with_r, with_boundary,
                  in_channels, first_one=False, *args, **kwargs):
         super(CoordConvTh, self).__init__()
@@ -207,7 +210,7 @@ class FAN(nn.Module):
         self.add_module('top_m_0', ConvBlock(256, 256))
         self.add_module('conv_last0', nn.Conv2d(256, 256, 1, 1, 0))
         self.add_module('bn_end0', nn.BatchNorm2d(256))
-        self.add_module('l0', nn.Conv2d(256, num_landmarks+1, 1, 1, 0))
+        self.add_module('l0', nn.Conv2d(256, num_landmarks + 1, 1, 1, 0))
 
         if fname_pretrained is not None:
             self.load_pretrained_weights(fname_pretrained)
@@ -248,8 +251,8 @@ class FAN(nn.Module):
     @torch.no_grad()
     def get_heatmap(self, x, b_preprocess=True):
         ''' outputs 0-1 normalized heatmap '''
-        x = F.interpolate(x, size=256, mode='bilinear',align_corners=True)
-        x_01 = x*0.5 + 0.5
+        x = F.interpolate(x, size=256, mode='bilinear', align_corners=True)
+        x_01 = x * 0.5 + 0.5
         outputs, _ = self(x_01)
         heatmaps = outputs[-1][:, :-1, :, :]
         scale_factor = x.size(2) // heatmaps.size(2)
@@ -330,8 +333,8 @@ def points2T(point, direction):
 
 
 def landmarks2eyes(landmarks):
-    idx_left = np.array(list(range(60, 67+1)) + [96])
-    idx_right = np.array(list(range(68, 75+1)) + [97])
+    idx_left = np.array(list(range(60, 67 + 1)) + [96])
+    idx_right = np.array(list(range(68, 75 + 1)) + [97])
     left = landmarks[idx_left]
     right = landmarks[idx_right]
     return left.mean(axis=0), right.mean(axis=0)
@@ -388,19 +391,19 @@ def landmarks2S(x, y):
 
 def pad_mirror(img, landmarks):
     H, W, _ = img.shape
-    img = np.pad(img, ((H//2, H//2), (W//2, W//2), (0, 0)), 'reflect')
-    small_blurred = gaussian(cv2.resize(img, (W, H)), H//100, multichannel=True)
+    img = np.pad(img, ((H // 2, H // 2), (W // 2, W // 2), (0, 0)), 'reflect')
+    small_blurred = gaussian(cv2.resize(img, (W, H)), H // 100, multichannel=True)
     blurred = cv2.resize(small_blurred, (W * 2, H * 2)) * 255
 
     H, W, _ = img.shape
     coords = np.meshgrid(np.arange(H), np.arange(W), indexing="ij")
-    weight_y = np.clip(coords[0] / (H//4), 0, 1)
-    weight_x = np.clip(coords[1] / (H//4), 0, 1)
+    weight_y = np.clip(coords[0] / (H // 4), 0, 1)
+    weight_x = np.clip(coords[1] / (H // 4), 0, 1)
     weight_y = np.minimum(weight_y, np.flip(weight_y, axis=0))
     weight_x = np.minimum(weight_x, np.flip(weight_x, axis=1))
-    weight = np.expand_dims(np.minimum(weight_y, weight_x), 2)**4
+    weight = np.expand_dims(np.minimum(weight_y, weight_x), 2) ** 4
     img = img * weight + blurred * (1 - weight)
-    landmarks += np.array([W//4, H//4])
+    landmarks += np.array([W // 4, H // 4])
     return img, landmarks
 
 
@@ -440,7 +443,7 @@ def normalize(x, eps=1e-6):
     """Apply min-max normalization."""
     x = x.contiguous()
     N, C, H, W = x.size()
-    x_ = x.view(N*C, -1)
+    x_ = x.view(N * C, -1)
     max_val = torch.max(x_, dim=1, keepdim=True)[0]
     min_val = torch.min(x_, dim=1, keepdim=True)[0]
     x_ = (x_ - min_val) / (max_val - min_val + eps)
@@ -455,7 +458,7 @@ def truncate(x, thres=0.1):
 
 def resize(x, p=2):
     """Resize heatmaps."""
-    return x**p
+    return x ** p
 
 
 def shift(x, N):
@@ -464,14 +467,14 @@ def shift(x, N):
     N = abs(N)
     _, _, H, W = x.size()
     head = torch.arange(N)
-    tail = torch.arange(H-N)
+    tail = torch.arange(H - N)
 
     if up:
-        head = torch.arange(H-N)+N
+        head = torch.arange(H - N) + N
         tail = torch.arange(N)
     else:
-        head = torch.arange(N) + (H-N)
-        tail = torch.arange(H-N)
+        head = torch.arange(N) + (H - N)
+        tail = torch.arange(H - N)
 
     # permutation indices
     perm = torch.cat([head, tail]).to(x.device)
@@ -501,11 +504,11 @@ def preprocess(x):
 
     sw = H // 256
     operations = Munch(chin=OPPAIR(0, 3),
-                       eyebrows=OPPAIR(-7*sw, 2),
-                       nostrils=OPPAIR(8*sw, 4),
-                       lipupper=OPPAIR(-8*sw, 4),
-                       liplower=OPPAIR(8*sw, 4),
-                       lipinner=OPPAIR(-2*sw, 3))
+                       eyebrows=OPPAIR(-7 * sw, 2),
+                       nostrils=OPPAIR(8 * sw, 4),
+                       lipupper=OPPAIR(-8 * sw, 4),
+                       liplower=OPPAIR(8 * sw, 4),
+                       lipinner=OPPAIR(-2 * sw, 3))
 
     for part, ops in operations.items():
         start, end = index_map[part]
@@ -520,13 +523,13 @@ def preprocess(x):
     x[:, zero_out] = 0
 
     start, end = index_map.nose
-    x[:, start+1:end] = shift(x[:, start+1:end], 4*sw)
+    x[:, start + 1:end] = shift(x[:, start + 1:end], 4 * sw)
     x[:, start:end] = resize(x[:, start:end], 1)
 
     start, end = index_map.eyes
     x[:, start:end] = resize(x[:, start:end], 1)
     x[:, start:end] = resize(shift(x[:, start:end], -8), 3) + \
-        shift(x[:, start:end], -24)
+                      shift(x[:, start:end], -24)
 
     # Second-level mask
     x2 = deepcopy(x)

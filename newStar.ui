@@ -1,227 +1,227 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>1100</width>
-    <height>700</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string>MainWindow</string>
-  </property>
-  <property name="layoutDirection">
-   <enum>Qt::LeftToRight</enum>
-  </property>
-  <widget class="QWidget" name="centralwidget">
-   <property name="layoutDirection">
-    <enum>Qt::LeftToRight</enum>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,0,2,0,6">
-    <property name="sizeConstraint">
-     <enum>QLayout::SetDefaultConstraint</enum>
-    </property>
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout_2" stretch="3,0,7">
-      <item>
-       <widget class="QGroupBox" name="typrGroup">
-        <property name="title">
-         <string>类型</string>
+    <class>MainWindow</class>
+    <widget class="QMainWindow" name="MainWindow">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>1100</width>
+                <height>700</height>
+            </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <property name="leftMargin">
-          <number>58</number>
-         </property>
-         <item>
-          <widget class="QRadioButton" name="male">
-           <property name="text">
-            <string>男人</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="female">
-           <property name="text">
-            <string>女人</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="cat">
-           <property name="text">
-            <string>猫</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="dog">
-           <property name="text">
-            <string>狗</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="wild">
-           <property name="text">
-            <string>野生动物</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="cartoon">
-           <property name="text">
-            <string>卡通</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="Line" name="line">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+        <property name="windowTitle">
+            <string>MainWindow</string>
         </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="groupBox_2">
-        <property name="title">
-         <string>功能</string>
+        <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_5">
-         <property name="leftMargin">
-          <number>30</number>
-         </property>
-         <property name="rightMargin">
-          <number>30</number>
-         </property>
-         <item>
-          <widget class="QPushButton" name="uploadReferImg">
-           <property name="text">
-            <string>上传参考图片</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="uploadOriginalImg">
-           <property name="text">
-            <string>上传源图片</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="generateResultImg">
-           <property name="text">
-            <string>生成结果图片</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="clearAll">
-           <property name="text">
-            <string>清除全部</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="Line" name="line_3">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout_3" stretch="3,0,7">
-      <item>
-       <widget class="QGroupBox" name="logoGroup">
-        <property name="title">
-         <string> </string>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <widget class="QGroupBox" name="logoImg">
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="Line" name="line_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="referGroup">
-        <property name="title">
-         <string>参考图片</string>
-        </property>
-        <layout class="QHBoxLayout" name="referBoxLayout">
-        </layout>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="Line" name="line_4">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout" stretch="3,0,7">
-      <item>
-       <widget class="QGroupBox" name="originalGroup">
-        <property name="title">
-         <string>源图片</string>
-        </property>
-        <layout class="QHBoxLayout" name="inputBoxLayout">
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="Line" name="line_5">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="resultGroup">
-        <property name="title">
-         <string>结果图片</string>
-        </property>
-        <layout class="QHBoxLayout" name="geneBoxLayout">
-        </layout>
-       </widget>
-      </item>
-     </layout>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1056</width>
-     <height>26</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QStatusBar" name="statusbar"/>
- </widget>
- <resources/>
- <connections/>
+        <widget class="QWidget" name="centralwidget">
+            <property name="layoutDirection">
+                <enum>Qt::LeftToRight</enum>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,0,2,0,6">
+                <property name="sizeConstraint">
+                    <enum>QLayout::SetDefaultConstraint</enum>
+                </property>
+                <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_2" stretch="3,0,7">
+                        <item>
+                            <widget class="QGroupBox" name="typrGroup">
+                                <property name="title">
+                                    <string>类型</string>
+                                </property>
+                                <layout class="QVBoxLayout" name="verticalLayout_4">
+                                    <property name="leftMargin">
+                                        <number>58</number>
+                                    </property>
+                                    <item>
+                                        <widget class="QRadioButton" name="male">
+                                            <property name="text">
+                                                <string>男人</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <widget class="QRadioButton" name="female">
+                                            <property name="text">
+                                                <string>女人</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <widget class="QRadioButton" name="cat">
+                                            <property name="text">
+                                                <string>猫</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <widget class="QRadioButton" name="dog">
+                                            <property name="text">
+                                                <string>狗</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <widget class="QRadioButton" name="wild">
+                                            <property name="text">
+                                                <string>野生动物</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <widget class="QRadioButton" name="cartoon">
+                                            <property name="text">
+                                                <string>卡通</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                </layout>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="Line" name="line">
+                                <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                </property>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="QGroupBox" name="groupBox_2">
+                                <property name="title">
+                                    <string>功能</string>
+                                </property>
+                                <layout class="QVBoxLayout" name="verticalLayout_5">
+                                    <property name="leftMargin">
+                                        <number>30</number>
+                                    </property>
+                                    <property name="rightMargin">
+                                        <number>30</number>
+                                    </property>
+                                    <item>
+                                        <widget class="QPushButton" name="uploadReferImg">
+                                            <property name="text">
+                                                <string>上传参考图片</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <widget class="QPushButton" name="uploadOriginalImg">
+                                            <property name="text">
+                                                <string>上传源图片</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <widget class="QPushButton" name="generateResultImg">
+                                            <property name="text">
+                                                <string>生成结果图片</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <widget class="QPushButton" name="clearAll">
+                                            <property name="text">
+                                                <string>清除全部</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                </layout>
+                            </widget>
+                        </item>
+                    </layout>
+                </item>
+                <item>
+                    <widget class="Line" name="line_3">
+                        <property name="orientation">
+                            <enum>Qt::Vertical</enum>
+                        </property>
+                    </widget>
+                </item>
+                <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_3" stretch="3,0,7">
+                        <item>
+                            <widget class="QGroupBox" name="logoGroup">
+                                <property name="title">
+                                    <string></string>
+                                </property>
+                                <layout class="QHBoxLayout" name="horizontalLayout_3">
+                                    <item>
+                                        <widget class="QGroupBox" name="logoImg">
+                                        </widget>
+                                    </item>
+                                </layout>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="Line" name="line_2">
+                                <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                </property>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="QGroupBox" name="referGroup">
+                                <property name="title">
+                                    <string>参考图片</string>
+                                </property>
+                                <layout class="QHBoxLayout" name="referBoxLayout">
+                                </layout>
+                            </widget>
+                        </item>
+                    </layout>
+                </item>
+                <item>
+                    <widget class="Line" name="line_4">
+                        <property name="orientation">
+                            <enum>Qt::Vertical</enum>
+                        </property>
+                    </widget>
+                </item>
+                <item>
+                    <layout class="QVBoxLayout" name="verticalLayout" stretch="3,0,7">
+                        <item>
+                            <widget class="QGroupBox" name="originalGroup">
+                                <property name="title">
+                                    <string>源图片</string>
+                                </property>
+                                <layout class="QHBoxLayout" name="inputBoxLayout">
+                                </layout>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="Line" name="line_5">
+                                <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                </property>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="QGroupBox" name="resultGroup">
+                                <property name="title">
+                                    <string>结果图片</string>
+                                </property>
+                                <layout class="QHBoxLayout" name="geneBoxLayout">
+                                </layout>
+                            </widget>
+                        </item>
+                    </layout>
+                </item>
+            </layout>
+        </widget>
+        <widget class="QMenuBar" name="menubar">
+            <property name="geometry">
+                <rect>
+                    <x>0</x>
+                    <y>0</y>
+                    <width>1056</width>
+                    <height>26</height>
+                </rect>
+            </property>
+        </widget>
+        <widget class="QStatusBar" name="statusbar"/>
+    </widget>
+    <resources/>
+    <connections/>
 </ui>
