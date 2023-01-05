@@ -73,7 +73,7 @@ class Stats:
         # 删除参考图片目录文件
         path_data = ['./ref/afhq/cat', './ref/afhq/dog', './ref/afhq/wild', './ref/celeba/female',
                      './ref/celeba/male',
-                     './ref/cartoon/img']
+                     './ref/other/img']
         for j in path_data:
             for i in os.listdir(j):  # os.listdir(path_data)#返回一个列表，里面是当前目录下面的所有东西的相对路径
                 file_data = j + "/" + i  # 当前文件夹的下面的所有东西的绝对路径
@@ -173,7 +173,7 @@ class Stats:
         elif domain == 'wild':
             file_path = './ref/afhq/wild'
         else:
-            file_path = './ref/cartoon/img'
+            file_path = './ref/other/img'
         shutil.copy(self.path, file_path)
         print(self.path)
         self.ref_img_viewer(domain)
@@ -201,7 +201,7 @@ class Stats:
         elif domain == 'wild':
             srcPath = './ref/afhq/wild'
         else:
-            srcPath = './ref/cartoon/img'
+            srcPath = './ref/other/img'
         if len(os.listdir(srcPath)) == 0:
             return QMessageBox.information(self, '生成图片', '选择类型中参考图片未上传，生成图片失败！')
         self.ui.statusbar.showMessage('生成图片中···', 5000)  # 设置存在时间为5秒
@@ -245,7 +245,7 @@ class Stats:
         elif domain == 'wild':
             file_path = './ref/afhq/wild'
         else:
-            file_path = './ref/cartoon/img'
+            file_path = './ref/other/img'
         print('file_path为{}'.format(file_path))
         img_type = ('.jpg', '.png', '.jpeg')
         png_list = list(i for i in os.listdir(file_path) if str(i).endswith(img_type))

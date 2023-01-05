@@ -84,7 +84,7 @@ def sample(domain):
         src_dir = './src'
         ref_dir = './ref/afhq'
     else:
-        w_hpf = 1
+        w_hpf = 0
         num_domains = 1
         modelName = './model/cartoon_model.ckpt'
         src_dir = './src'
