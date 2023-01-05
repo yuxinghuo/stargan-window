@@ -144,7 +144,7 @@
                         <item>
                             <widget class="QGroupBox" name="logoGroup">
                                 <property name="title">
-                                    <string></string>
+                                    <string> </string>
                                 </property>
                                 <layout class="QHBoxLayout" name="horizontalLayout_3">
                                     <item>
